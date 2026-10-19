@@ -60,10 +60,23 @@ void comprarItem(Personagem& personagem, Loja& loja) {
     }
 }
 
+void usarDescartar(Personagem& personagem) {
+    cout << "Qual item deseja usar/descartar? ";
+    string nome;
+    cin >> nome;
+
+    if (personagem.descartar(nome)) {
+        cout << "1 unidade de " << nome << " descartada." << endl;
+    } else {
+        cout << "Item nao encontrado na mochila." << endl;
+    }
+}
+
 void mostrarMenu() {
     cout << "1 - Ver Loja" << endl;
     cout << "2 - Comprar Item" << endl;
     cout << "3 - Ver Mochila" << endl;
+    cout << "4 - Usar/Descartar item" << endl;
     cout << "6 - Sair" << endl;
 }
 
@@ -97,6 +110,8 @@ int main() {
             comprarItem(personagem, loja);
         } else if (opcao == 3) {
             mostrarMochila(personagem.mochila(), personagem.dinheiro());
+        } else if (opcao == 4) {
+            usarDescartar(personagem);
         } else if (opcao == 6) {
             sair = true;
         } else {

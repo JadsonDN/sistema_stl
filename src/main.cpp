@@ -26,7 +26,7 @@ void mostrarLoja(const Loja& loja) {
     }
 }
 
-void mostrarMochila(const Inventario& mochila) {
+void mostrarMochila(const Inventario& mochila, int dinheiro) {
     if (mochila.vazio()) {
         cout << "O inventario esta vazio." << endl;
         return;
@@ -40,10 +40,11 @@ void mostrarMochila(const Inventario& mochila) {
              << " | Peso: " << it->getPeso() << endl;
     }
     cout << "Peso total: " << mochila.pesoTotal() << " kg" << endl;
+    cout << "Dinheiro: " << dinheiro << endl;
 }
 
 void comprarItem(Personagem& personagem, Loja& loja) {
-    cout << "Qual item deseja comprar? ";
+    cout << "Qual item deseja comprar? (Dinheiro: " << personagem.dinheiro() << ")" << endl;
     string nome;
     cin >> nome;
 
@@ -95,7 +96,7 @@ int main() {
         } else if (opcao == 2) {
             comprarItem(personagem, loja);
         } else if (opcao == 3) {
-            mostrarMochila(personagem.mochila());
+            mostrarMochila(personagem.mochila(), personagem.dinheiro());
         } else if (opcao == 6) {
             sair = true;
         } else {

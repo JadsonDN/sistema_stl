@@ -5,6 +5,7 @@
 #include "Item.hpp"
 #include "Loja.hpp"
 #include "Inventario.hpp"
+#include "Personagem.hpp"
 
 using namespace std;
 
@@ -41,8 +42,26 @@ void mostrarMochila(const Inventario& mochila) {
     cout << "Peso total: " << mochila.pesoTotal() << " kg" << endl;
 }
 
+void comprarItem(Personagem& personagem, Loja& loja) {
+    cout << "Qual item deseja comprar? ";
+    string nome;
+    cin >> nome;
+
+    ResultadoCompra resultado = personagem.comprar(loja, nome);
+    if (resultado == COMPRA_OK) {
+        cout << "Sucesso! " << nome << " comprada." << endl;
+    } else if (resultado == ITEM_NAO_ENCONTRADO) {
+        cout << "Item nao encontrado." << endl;
+    } else if (resultado == SALDO_INSUFICIENTE) {
+        cout << "Saldo insuficiente." << endl;
+    } else if (resultado == PESO_EXCEDIDO) {
+        cout << "Peso limite excedido." << endl;
+    }
+}
+
 void mostrarMenu() {
     cout << "1 - Ver Loja" << endl;
+    cout << "2 - Comprar Item" << endl;
     cout << "3 - Ver Mochila" << endl;
     cout << "6 - Sair" << endl;
 }
@@ -59,14 +78,11 @@ int lerOpcao() {
 
 int main() {
     Loja loja;
-    Inventario mochila;
+    Personagem personagem("Heroi", 200, 50);
 
-    // Trecho temporario da etapa 3: testa o acumulo antes de existir compra.
-    mochila.adicionar(Item("Pocao", 20, 0.5, 2));
-    mochila.adicionar(Item("Pocao", 20, 0.5, 1));
-    mochila.adicionar(Item("Arco", 100, 1.5, 1));
-
-    cout << "Bem-vindo! Dinheiro: 200 | Peso: 0/50kg" << endl;
+    cout << "Bem-vindo! Dinheiro: " << personagem.dinheiro()
+         << " | Peso: " << personagem.pesoAtual() << "/"
+         << personagem.pesoMax() << "kg" << endl;
 
     bool sair = false;
     while (!sair) {
@@ -76,8 +92,10 @@ int main() {
 
         if (opcao == 1) {
             mostrarLoja(loja);
+        } else if (opcao == 2) {
+            comprarItem(personagem, loja);
         } else if (opcao == 3) {
-            mostrarMochila(mochila);
+            mostrarMochila(personagem.mochila());
         } else if (opcao == 6) {
             sair = true;
         } else {

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <map>
+#include <list>
 #include <string>
 #include "Item.hpp"
 #include "Loja.hpp"
+#include "Inventario.hpp"
 
 using namespace std;
 
@@ -23,8 +25,25 @@ void mostrarLoja(const Loja& loja) {
     }
 }
 
+void mostrarMochila(const Inventario& mochila) {
+    if (mochila.vazio()) {
+        cout << "O inventario esta vazio." << endl;
+        return;
+    }
+    cout << "--- Mochila ---" << endl;
+    const list<Item>& itens = mochila.lista();
+    list<Item>::const_iterator it;
+    for (it = itens.begin(); it != itens.end(); ++it) {
+        cout << it->getNome()
+             << " | Quantidade: " << it->getQuantidade()
+             << " | Peso: " << it->getPeso() << endl;
+    }
+    cout << "Peso total: " << mochila.pesoTotal() << " kg" << endl;
+}
+
 void mostrarMenu() {
     cout << "1 - Ver Loja" << endl;
+    cout << "3 - Ver Mochila" << endl;
     cout << "6 - Sair" << endl;
 }
 
@@ -40,6 +59,12 @@ int lerOpcao() {
 
 int main() {
     Loja loja;
+    Inventario mochila;
+
+    // Trecho temporario da etapa 3: testa o acumulo antes de existir compra.
+    mochila.adicionar(Item("Pocao", 20, 0.5, 2));
+    mochila.adicionar(Item("Pocao", 20, 0.5, 1));
+    mochila.adicionar(Item("Arco", 100, 1.5, 1));
 
     cout << "Bem-vindo! Dinheiro: 200 | Peso: 0/50kg" << endl;
 
@@ -51,6 +76,8 @@ int main() {
 
         if (opcao == 1) {
             mostrarLoja(loja);
+        } else if (opcao == 3) {
+            mostrarMochila(mochila);
         } else if (opcao == 6) {
             sair = true;
         } else {

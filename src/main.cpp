@@ -6,8 +6,19 @@
 #include "Loja.hpp"
 #include "Inventario.hpp"
 #include "Personagem.hpp"
+#include "Adm.hpp"
 
 using namespace std;
+
+int lerOpcao() {
+    int opcao;
+    if (!(cin >> opcao)) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        return -1;
+    }
+    return opcao;
+}
 
 void mostrarLoja(const Loja& loja) {
     const map<string, Item>& itens = loja.itens();
@@ -72,27 +83,83 @@ void usarDescartar(Personagem& personagem) {
     }
 }
 
+void areaAdm(Adm& adm, Loja& loja) {
+    cout << "Senha: ";
+    string senha;
+    cin >> senha;
+
+    if (!adm.autenticar(senha)) {
+        cout << "Senha incorreta." << endl;
+        return;
+    }
+
+    bool voltar = false;
+    while (!voltar) {
+        cout << "--- Area do Administrador ---" << endl;
+        cout << "1 - Adicionar item" << endl;
+        cout << "2 - Tirar 1 unidade" << endl;
+        cout << "3 - Remover item inteiro" << endl;
+        cout << "4 - Voltar" << endl;
+        cout << "Escolha: ";
+        int opcao = lerOpcao();
+
+        if (opcao == 1) {
+            string nome;
+            int preco, quantidade;
+            double peso;
+            cout << "Nome: ";
+            cin >> nome;
+            cout << "Preco: ";
+            if (!(cin >> preco)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
+            cout << "Peso: ";
+            if (!(cin >> peso)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
+            cout << "Quantidade inicial: ";
+            if (!(cin >> quantidade)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
+
+            if (adm.adicionar(loja, Item(nome, preco, peso, quantidade))) {
+                cout << "Item " << nome << " adicionado/atualizado." << endl;
+            } else {
+                cout << "Quantidade invalida." << endl;
+            }
+        } else if (opcao == 2) {
+            string nome;
+            cout << "Nome do item: ";
+            cin >> nome;
+            if (adm.tirar1(loja, nome)) {
+                cout << "1 unidade de " << nome << " retirada." << endl;
+            } else {
+                cout << "Item nao encontrado na loja." << endl;
+            }
+        } else if (opcao == 3) {
+            string nome;
+            cout << "Nome do item: ";
+            cin >> nome;
+            if (adm.removerTudo(loja, nome)) {
+                cout << "Item " << nome << " removido do estoque." << endl;
+            } else {
+                cout << "Item nao encontrado na loja." << endl;
+            }
+        } else if (opcao == 4) {
+            voltar = true;
+        } else {
+            cout << "Opcao invalida" << endl;
+        }
+    }
+}
+
 void mostrarMenu() {
     cout << "1 - Ver Loja" << endl;
     cout << "2 - Comprar Item" << endl;
     cout << "3 - Ver Mochila" << endl;
     cout << "4 - Usar/Descartar item" << endl;
+    cout << "5 - Area do administrador" << endl;
     cout << "6 - Sair" << endl;
-}
-
-int lerOpcao() {
-    int opcao;
-    if (!(cin >> opcao)) {
-        cin.clear();
-        cin.ignore(1000, '\n');
-        return -1;
-    }
-    return opcao;
 }
 
 int main() {
     Loja loja;
     Personagem personagem("Heroi", 200, 50);
+    Adm adm;
 
     cout << "Bem-vindo! Dinheiro: " << personagem.dinheiro()
          << " | Peso: " << personagem.pesoAtual() << "/"
@@ -112,6 +179,8 @@ int main() {
             mostrarMochila(personagem.mochila(), personagem.dinheiro());
         } else if (opcao == 4) {
             usarDescartar(personagem);
+        } else if (opcao == 5) {
+            areaAdm(adm, loja);
         } else if (opcao == 6) {
             sair = true;
         } else {

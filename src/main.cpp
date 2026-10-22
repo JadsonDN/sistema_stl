@@ -13,11 +13,23 @@ using namespace std;
 int lerOpcao() {
     int opcao;
     if (!(cin >> opcao)) {
+        bool eraEof = cin.eof();
         cin.clear();
         cin.ignore(1000, '\n');
-        return -1;
+        return eraEof ? -2 : -1;
     }
+    cin.ignore(1000, '\n');
     return opcao;
+}
+
+bool fimDeEntrada(int resultado) {
+    return resultado == -2;
+}
+
+string lerNome() {
+    string nome;
+    getline(cin, nome);
+    return nome;
 }
 
 void mostrarLoja(const Loja& loja) {
@@ -56,8 +68,7 @@ void mostrarMochila(const Inventario& mochila, int dinheiro) {
 
 void comprarItem(Personagem& personagem, Loja& loja) {
     cout << "Qual item deseja comprar? (Dinheiro: " << personagem.dinheiro() << ")" << endl;
-    string nome;
-    cin >> nome;
+    string nome = lerNome();
 
     ResultadoCompra resultado = personagem.comprar(loja, nome);
     if (resultado == COMPRA_OK) {
@@ -73,8 +84,7 @@ void comprarItem(Personagem& personagem, Loja& loja) {
 
 void usarDescartar(Personagem& personagem) {
     cout << "Qual item deseja usar/descartar? ";
-    string nome;
-    cin >> nome;
+    string nome = lerNome();
 
     if (personagem.descartar(nome)) {
         cout << "1 unidade de " << nome << " descartada." << endl;
@@ -85,8 +95,7 @@ void usarDescartar(Personagem& personagem) {
 
 void areaAdm(Adm& adm, Loja& loja) {
     cout << "Senha: ";
-    string senha;
-    cin >> senha;
+    string senha = lerNome();
 
     if (!adm.autenticar(senha)) {
         cout << "Senha incorreta." << endl;
@@ -108,13 +117,14 @@ void areaAdm(Adm& adm, Loja& loja) {
             int preco, quantidade;
             double peso;
             cout << "Nome: ";
-            cin >> nome;
+            nome = lerNome();
             cout << "Preco: ";
             if (!(cin >> preco)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
             cout << "Peso: ";
             if (!(cin >> peso)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
             cout << "Quantidade inicial: ";
             if (!(cin >> quantidade)) { cin.clear(); cin.ignore(1000, '\n'); continue; }
+            cin.ignore(1000, '\n');
 
             if (adm.adicionar(loja, Item(nome, preco, peso, quantidade))) {
                 cout << "Item " << nome << " adicionado/atualizado." << endl;
@@ -124,7 +134,7 @@ void areaAdm(Adm& adm, Loja& loja) {
         } else if (opcao == 2) {
             string nome;
             cout << "Nome do item: ";
-            cin >> nome;
+            nome = lerNome();
             if (adm.tirar1(loja, nome)) {
                 cout << "1 unidade de " << nome << " retirada." << endl;
             } else {
@@ -133,7 +143,7 @@ void areaAdm(Adm& adm, Loja& loja) {
         } else if (opcao == 3) {
             string nome;
             cout << "Nome do item: ";
-            cin >> nome;
+            nome = lerNome();
             if (adm.removerTudo(loja, nome)) {
                 cout << "Item " << nome << " removido do estoque." << endl;
             } else {
@@ -170,8 +180,9 @@ int main() {
         mostrarMenu();
         cout << "Escolha: ";
         int opcao = lerOpcao();
-
-        if (opcao == 1) {
+        if (fimDeEntrada(opcao)) {
+            sair = true;
+        } else if (opcao == 1) {
             mostrarLoja(loja);
         } else if (opcao == 2) {
             comprarItem(personagem, loja);

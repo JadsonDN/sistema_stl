@@ -6,6 +6,7 @@ Loja::Loja() {
     adicionarItem(Item("Escudo", 80, 5.0, 3));
     adicionarItem(Item("Elmo", 60, 2.0, 4));
     adicionarItem(Item("Arco", 100, 1.5, 2));
+    adicionarItem(Item("Armadura Pesada", 200, 60.0, 1));
 }
 
 bool Loja::existe(const std::string& nome) const {

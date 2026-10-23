@@ -53,14 +53,13 @@ bool Arquivo::carregar(Loja& loja, Personagem& personagem) {
         return false;
     }
 
-    loja.limpar();
-
     std::string linha;
     std::string secao = "";
 
     while (std::getline(in, linha)) {
         if (linha == "[LOJA]") {
             secao = "LOJA";
+            loja.limpar();
             continue;
         }
         if (linha == "[PERSONAGEM]") {

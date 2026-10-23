@@ -25,6 +25,10 @@ public:
     bool descartar(const std::string& nome);
 
     const Inventario& mochila() const;
+    Inventario& mochila();
+
+    void setDinheiro(int valor);
+    void setPesoMax(double valor);
 
 private:
     std::string nome;

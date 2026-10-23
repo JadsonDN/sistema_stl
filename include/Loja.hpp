@@ -18,6 +18,7 @@ public:
     void adicionarItem(const Item& novo);
 
     const std::map<std::string, Item>& itens() const;
+    void limpar();
 
 private:
     std::map<std::string, Item> estoque;

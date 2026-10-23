@@ -46,3 +46,15 @@ bool Personagem::descartar(const std::string& nome) {
 const Inventario& Personagem::mochila() const {
     return inventario;
 }
+
+Inventario& Personagem::mochila() {
+    return inventario;
+}
+
+void Personagem::setDinheiro(int valor) {
+    dinheiroAtual = valor;
+}
+
+void Personagem::setPesoMax(double valor) {
+    pesoMaximo = valor;
+}

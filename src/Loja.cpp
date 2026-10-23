@@ -62,3 +62,7 @@ void Loja::adicionarItem(const Item& novo) {
 const std::map<std::string, Item>& Loja::itens() const {
     return estoque;
 }
+
+void Loja::limpar() {
+    estoque.clear();
+}

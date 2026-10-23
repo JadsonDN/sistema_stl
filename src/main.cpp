@@ -7,6 +7,7 @@
 #include "Inventario.hpp"
 #include "Personagem.hpp"
 #include "Adm.hpp"
+#include "Arquivo.hpp"
 
 using namespace std;
 
@@ -177,6 +178,9 @@ int main() {
     Loja loja;
     Personagem personagem("Heroi", 200, 50);
     Adm adm;
+    Arquivo arq;
+
+    arq.carregar(loja, personagem);
 
     cout << "Bem-vindo! Dinheiro: " << personagem.dinheiro()
          << " | Peso: " << personagem.pesoAtual() << "/"
@@ -200,6 +204,7 @@ int main() {
         } else if (opcao == 5) {
             areaAdm(adm, loja);
         } else if (opcao == 6) {
+            arq.salvar(loja, personagem);
             sair = true;
         } else {
             cout << "Opcao invalida" << endl;

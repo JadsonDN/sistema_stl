@@ -75,10 +75,13 @@ void comprarItem(Personagem& personagem, Loja& loja) {
         cout << "Sucesso! " << nome << " comprada." << endl;
     } else if (resultado == ITEM_NAO_ENCONTRADO) {
         cout << "Item nao encontrado." << endl;
+        cout << "Voce voltou ao menu principal" << endl;
     } else if (resultado == SALDO_INSUFICIENTE) {
         cout << "Saldo insuficiente." << endl;
+        cout << "Voce voltou ao menu principal" << endl;
     } else if (resultado == PESO_EXCEDIDO) {
         cout << "Peso limite excedido." << endl;
+        cout << "Voce voltou ao menu principal" << endl;
     }
 }
 
@@ -90,6 +93,7 @@ void usarDescartar(Personagem& personagem) {
         cout << "1 unidade de " << nome << " descartada." << endl;
     } else {
         cout << "Item nao encontrado na mochila." << endl;
+        cout << "Voce voltou ao menu principal" << endl;
     }
 }
 
@@ -99,6 +103,7 @@ void areaAdm(Adm& adm, Loja& loja) {
 
     if (!adm.autenticar(senha)) {
         cout << "Senha incorreta." << endl;
+        cout << "Voce voltou ao menu principal" << endl;
         return;
     }
 
@@ -153,11 +158,13 @@ void areaAdm(Adm& adm, Loja& loja) {
             voltar = true;
         } else {
             cout << "Opcao invalida" << endl;
+            cout << "Voce voltou ao menu" << endl;
         }
     }
 }
 
 void mostrarMenu() {
+    cout << "############ Menu Principal ############" << endl;
     cout << "1 - Ver Loja" << endl;
     cout << "2 - Comprar Item" << endl;
     cout << "3 - Ver Mochila" << endl;
@@ -196,6 +203,7 @@ int main() {
             sair = true;
         } else {
             cout << "Opcao invalida" << endl;
+            cout << "Voce voltou ao menu principal" << endl;
         }
     }
 
